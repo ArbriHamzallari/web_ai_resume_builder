@@ -2,6 +2,7 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { logout } from '../app/features/authSlice'
+import { Crown } from 'lucide-react'
 
 const Navbar = () => {
 
@@ -22,6 +23,13 @@ const Navbar = () => {
             <img src="/logo.svg" alt="logo" className="h-11 w-auto" />
         </Link>
         <div className='flex items-center gap-4 text-sm'>
+            <Link 
+              to="/app/pricing" 
+              className='flex items-center gap-1 text-blue-600 hover:text-blue-700 font-medium transition-colors'
+            >
+              <Crown className="size-4" />
+              <span className='max-sm:hidden'>Pricing</span>
+            </Link>
             <p className='max-sm:hidden'>Hi, {user?.name}</p>
             <button onClick={logoutUser} className='bg-white hover:bg-slate-50 border border-gray-300 px-7 py-1.5 rounded-full active:scale-95 transition-all'>Logout</button>
         </div>
