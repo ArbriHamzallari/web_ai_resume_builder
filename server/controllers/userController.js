@@ -26,7 +26,7 @@ export const registerUser = async (req, res) => {
             return res.status(400).json({message: 'User already exists'})
         }
 
-        // create new user
+         // create new user
          const hashedPassword = await bcrypt.hash(password, 10)
          const newUser = await User.create({
             name, email, password: hashedPassword
@@ -35,6 +35,17 @@ export const registerUser = async (req, res) => {
          // return success message
          const token = generateToken(newUser._id)
          newUser.password = undefined;
+
+         // Set HTTP-only cookie for production security
+         // secure: true for HTTPS (Render uses HTTPS)
+         // sameSite: 'none' required for cross-origin cookies
+         res.cookie('token', token, {
+             httpOnly: true,
+             secure: true, // Always true on Render (HTTPS)
+             sameSite: 'none', // Required for cross-origin requests
+             maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+             path: '/'
+         })
 
          return res.status(201).json({message: 'User created successfully', token, user: newUser})
 
@@ -63,6 +74,17 @@ export const loginUser = async (req, res) => {
         // return success message
          const token = generateToken(user._id)
          user.password = undefined;
+
+         // Set HTTP-only cookie for production security
+         // secure: true for HTTPS (Render uses HTTPS)
+         // sameSite: 'none' required for cross-origin cookies
+         res.cookie('token', token, {
+             httpOnly: true,
+             secure: true, // Always true on Render (HTTPS)
+             sameSite: 'none', // Required for cross-origin requests
+             maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+             path: '/'
+         })
 
          return res.status(200).json({message: 'Login successful', token, user})
 

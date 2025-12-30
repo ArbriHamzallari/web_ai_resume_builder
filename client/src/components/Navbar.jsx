@@ -11,9 +11,15 @@ const Navbar = () => {
 
     const navigate = useNavigate()
 
-    const logoutUser = ()=>{
-        navigate('/')
+    const logoutUser = async ()=>{
+        // Clear local storage
+        localStorage.removeItem('token')
+        // Clear Redux state
         dispatch(logout())
+        // Navigate to home
+        navigate('/')
+        // Optionally call logout endpoint to clear server-side session
+        // await api.post('/api/users/logout')
     }
 
   return (

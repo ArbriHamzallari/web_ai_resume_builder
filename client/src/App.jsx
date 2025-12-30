@@ -20,18 +20,27 @@ const App = () => {
   const getUserData = async () => {
     const token = localStorage.getItem('token')
     try {
-      if(token){
-        const { data } = await api.get('/api/users/data', {headers: {Authorization: token}})
-        if(data.user){
-          dispatch(login({token, user: data.user}))
+      // Try to get user data - cookies will be sent automatically with withCredentials
+      const { data } = await api.get('/api/users/data', token ? {headers: {Authorization: token}} : {})
+      if(data.user){
+        // Update token if provided (for backward compatibility)
+        const authToken = token || data.token
+        if(authToken) {
+          localStorage.setItem('token', authToken)
         }
-        dispatch(setLoading(false))
-      }else{
-        dispatch(setLoading(false))
+        dispatch(login({token: authToken, user: data.user}))
       }
-    } catch (error) {
       dispatch(setLoading(false))
-      console.log(error.message)
+    } catch (error) {
+      // If unauthorized, clear invalid token
+      if(error.response?.status === 401) {
+        localStorage.removeItem('token')
+      }
+      dispatch(setLoading(false))
+      // Don't log error if no token (user not logged in)
+      if(token) {
+        console.log('Auth check failed:', error.message)
+      }
     }
   }
 

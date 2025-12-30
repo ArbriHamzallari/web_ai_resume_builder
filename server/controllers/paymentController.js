@@ -24,7 +24,7 @@ export const createPayPalPayment = async (req, res) => {
     await payment.save()
 
     // Mock PayPal approval URL - replace with actual PayPal SDK integration
-    const approvalUrl = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/app/payments/paypal/callback?paymentId=${payment._id}`
+    const approvalUrl = `${process.env.FRONTEND_URL || 'https://resume-frontend-5pbi.onrender.com'}/app/payments/paypal/callback?paymentId=${payment._id}`
 
     res.json({
       success: true,
@@ -105,7 +105,7 @@ export const createLemonSqueezyCheckout = async (req, res) => {
 
     // In a real implementation, you would call Lemon Squeezy API here
     // For now, we'll return a mock checkout URL
-    const checkoutUrl = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/app/payments/lemonsqueezy/callback?paymentId=${payment._id}`
+    const checkoutUrl = `${process.env.FRONTEND_URL || 'https://resume-frontend-5pbi.onrender.com'}/app/payments/lemonsqueezy/callback?paymentId=${payment._id}`
 
     res.json({
       success: true,

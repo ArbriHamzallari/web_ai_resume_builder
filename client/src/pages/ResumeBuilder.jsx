@@ -86,13 +86,19 @@ const ResumeBuilder = () => {
   }
 
   const handleShare = () =>{
-    const frontendUrl = window.location.href.split('/app/')[0];
-    const resumeUrl = frontendUrl + '/view/' + resumeId;
+    // Use production frontend URL or current origin
+    const frontendUrl = import.meta.env.VITE_FRONTEND_URL || window.location.origin;
+    const resumeUrl = `${frontendUrl}/view/${resumeId}`;
 
     if(navigator.share){
       navigator.share({url: resumeUrl, text: "My Resume", })
     }else{
-      alert('Share not supported on this browser.')
+      // Fallback: copy to clipboard
+      navigator.clipboard.writeText(resumeUrl).then(() => {
+        toast.success('Resume URL copied to clipboard!')
+      }).catch(() => {
+        alert(`Resume URL: ${resumeUrl}`)
+      })
     }
   }
 
