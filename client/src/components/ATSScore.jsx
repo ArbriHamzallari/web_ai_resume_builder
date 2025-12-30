@@ -99,7 +99,7 @@ const ATSScore = ({ resumeData }) => {
   }, [resumeData, accessCheck.allowed])
 
   const getScoreColor = (score) => {
-    if (score >= 80) return 'text-green-600 bg-green-50 border-green-200'
+    if (score >= 80) return 'text-purple-600 bg-purple-50 border-purple-200'
     if (score >= 60) return 'text-yellow-600 bg-yellow-50 border-yellow-200'
     return 'text-red-600 bg-red-50 border-red-200'
   }
@@ -152,7 +152,7 @@ const ATSScore = ({ resumeData }) => {
           <div className="w-full bg-gray-200 rounded-full h-2">
             <div
               className={`h-2 rounded-full transition-all duration-500 ${
-                score >= 80 ? 'bg-green-500' : score >= 60 ? 'bg-yellow-500' : 'bg-red-500'
+                score >= 80 ? 'bg-purple-600' : score >= 60 ? 'bg-yellow-500' : 'bg-red-500'
               }`}
               style={{ width: `${score}%` }}
             />
@@ -173,7 +173,7 @@ const ATSScore = ({ resumeData }) => {
           )}
 
           {score >= 80 && (
-            <p className="text-xs text-green-700 bg-green-50 p-2 rounded">
+            <p className="text-xs text-purple-700 bg-purple-50 p-2 rounded">
               Great! Your resume is well-optimized for ATS systems.
             </p>
           )}

@@ -103,7 +103,7 @@ const Checkout = () => {
                 }
                 return (
                   <div key={key} className="flex items-center gap-2 text-sm text-gray-700">
-                    <CheckCircle className="size-4 text-green-500 flex-shrink-0" />
+                    <CheckCircle className="size-4 text-purple-600 flex-shrink-0" />
                     <span>{featureNames[key] || key}</span>
                   </div>
                 )

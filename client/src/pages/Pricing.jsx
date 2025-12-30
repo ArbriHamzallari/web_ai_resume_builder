@@ -139,7 +139,7 @@ const Pricing = () => {
                           className="flex items-center gap-2 text-sm"
                         >
                           {hasFeature ? (
-                            <Check className="size-4 text-green-500 flex-shrink-0" />
+                            <Check className="size-4 text-purple-600 flex-shrink-0" />
                           ) : (
                             <span className="size-4 text-gray-300 flex-shrink-0">×</span>
                           )}

@@ -34,7 +34,7 @@ const ResumeBuilder = () => {
     project: [],
     skills: [],
     template: "classic",
-    accent_color: "#3B82F6",
+    accent_color: "#7C3AED",
     public: false,
   })
 
@@ -160,7 +160,7 @@ const saveResume = async () => {
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
                 <div 
-                  className="h-2 bg-gradient-to-r from-blue-500 via-blue-600 to-green-500 rounded-full transition-all duration-500 ease-out"
+                  className="h-2 bg-gradient-to-r from-blue-500 via-purple-600 to-purple-500 rounded-full transition-all duration-500 ease-out"
                   style={{width: `${((activeSectionIndex + 1) / sections.length) * 100}%`}}
                 />
               </div>
@@ -185,7 +185,7 @@ const saveResume = async () => {
             <div className='bg-white rounded-lg shadow-sm border border-gray-200 p-6 pt-1 animate-slide-in-left'>
               {/* progress bar using activeSectionIndex */}
               <hr className="absolute top-0 left-0 right-0 border-2 border-gray-200"/>
-              <hr className="absolute top-0 left-0 h-1 bg-gradient-to-r from-green-500 to-green-600 border-none transition-all duration-500 ease-out" style={{width: `${((activeSectionIndex + 1) / sections.length) * 100}%`}}/>
+              <hr className="absolute top-0 left-0 h-1 bg-gradient-to-r from-purple-500 to-purple-600 border-none transition-all duration-500 ease-out" style={{width: `${((activeSectionIndex + 1) / sections.length) * 100}%`}}/>
 
               {/* Section Navigation */}
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 border-b border-gray-200 pb-4">
@@ -239,7 +239,7 @@ const saveResume = async () => {
               </div>
               <button 
                 onClick={()=> {toast.promise(saveResume, {loading: 'Saving...', success: 'Saved!', error: 'Failed to save'})}} 
-                className='w-full bg-gradient-to-br from-green-500 to-green-600 text-white font-medium rounded-lg px-6 py-3 mt-6 text-sm shadow-md hover:shadow-lg hover:from-green-600 hover:to-green-700 transition-all duration-200 active:scale-98'
+                className='w-full bg-gradient-to-br from-purple-600 to-purple-700 text-white font-medium rounded-lg px-6 py-3 mt-6 text-sm shadow-md hover:shadow-lg hover:from-purple-700 hover:to-purple-800 transition-all duration-200 active:scale-98'
               >
                 Save Changes
               </button>
@@ -280,7 +280,7 @@ const saveResume = async () => {
                     </button>
                     <button 
                       onClick={downloadResume} 
-                      className='flex items-center gap-2 px-6 py-2 text-xs bg-gradient-to-br from-green-500 to-green-600 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 active:scale-95 font-medium'
+                      className='flex items-center gap-2 px-6 py-2 text-xs bg-gradient-to-br from-purple-600 to-purple-700 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 active:scale-95 font-medium'
                     >
                       <DownloadIcon className='size-4'/> Download
                     </button>
