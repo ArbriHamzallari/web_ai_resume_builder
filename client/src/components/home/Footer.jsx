@@ -1,14 +1,15 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 const Footer = () => {
   return (
     <>
 
-<footer className="flex flex-wrap justify-center lg:justify-between overflow-hidden gap-10 md:gap-20 py-16 px-6 md:px-16 lg:px-24 xl:px-32 text-[13px] text-gray-500 bg-gradient-to-r from-white via-purple-200/60 to-white mt-40">
+<footer className="flex flex-wrap justify-center lg:justify-between overflow-hidden gap-8 md:gap-10 lg:gap-20 py-12 md:py-16 px-4 md:px-8 lg:px-16 xl:px-24 text-xs md:text-[13px] text-gray-500 bg-gradient-to-r from-white via-purple-200/60 to-white mt-20 md:mt-32 lg:mt-40">
         <div className="flex flex-wrap items-start gap-10 md:gap-[60px] xl:gap-[140px]">
-            <a href="https://codrix.org/" target="_blank" rel="noopener noreferrer">
+            <Link to="/">
                 <img src="/logo.svg" alt="HireCraft logo" className="h-11 w-auto" />
-            </a>
+            </Link>
             <div>
                 <p className="text-slate-800 font-semibold">Product</p>
                 <ul className="mt-2 space-y-2">

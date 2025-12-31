@@ -26,18 +26,18 @@ const CompactPricing = () => {
     ];
 
     return (
-        <div id="pricing" className="py-16 px-4 md:px-16 lg:px-24 xl:px-40 bg-gradient-to-br from-purple-50 via-white to-purple-50">
+        <div id="pricing" className="py-12 md:py-16 px-4 md:px-8 lg:px-16 xl:px-24 bg-gradient-to-br from-purple-50 via-white to-purple-50">
             <div className="max-w-6xl mx-auto">
-                <div className="text-center mb-12">
-                    <h2 className="text-3xl md:text-4xl font-semibold text-slate-900 mb-4">
+                <div className="text-center mb-8 md:mb-12">
+                    <h2 className="text-2xl md:text-3xl lg:text-4xl font-semibold text-slate-900 mb-3 md:mb-4">
                         Simple, Transparent Pricing
                     </h2>
-                    <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+                    <p className="text-base md:text-lg text-slate-600 max-w-2xl mx-auto">
                         Choose the plan that works best for you
                     </p>
                 </div>
 
-                <div className="grid md:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
                     {plans.map((plan) => (
                         <div
                             key={plan.id}
@@ -55,23 +55,23 @@ const CompactPricing = () => {
                                 </div>
                             )}
 
-                            <div className="p-6">
-                                <h3 className="text-2xl font-bold text-slate-900 mb-2">{plan.name}</h3>
+                            <div className="p-4 md:p-6">
+                                <h3 className="text-xl md:text-2xl font-bold text-slate-900 mb-2">{plan.name}</h3>
                                 
-                                <div className="mb-6">
+                                <div className="mb-4 md:mb-6">
                                     <div className="flex items-baseline gap-2">
-                                        <span className="text-4xl font-bold text-slate-900">
+                                        <span className="text-3xl md:text-4xl font-bold text-slate-900">
                                             {plan.price === 0 ? 'Free' : `$${plan.price}`}
                                         </span>
                                         {plan.billing === 'monthly' && (
-                                            <span className="text-gray-500">/month</span>
+                                            <span className="text-sm md:text-base text-gray-500">/month</span>
                                         )}
                                     </div>
                                 </div>
 
                                 <Link
                                     to={`/app/checkout?plan=${plan.id}`}
-                                    className={`block w-full text-center py-3 px-6 rounded-lg font-semibold transition-all duration-200 mb-6 ${
+                                    className={`block w-full text-center py-2.5 md:py-3 px-4 md:px-6 rounded-lg font-semibold transition-all duration-200 mb-4 md:mb-6 text-sm md:text-base ${
                                         plan.highlight
                                             ? 'bg-gradient-to-r from-purple-600 to-purple-700 text-white hover:from-purple-700 hover:to-purple-800 shadow-lg hover:shadow-xl'
                                             : 'bg-gray-900 text-white hover:bg-gray-800'

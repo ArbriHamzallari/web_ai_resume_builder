@@ -55,9 +55,9 @@ const Hero = () => {
     <div className="min-h-screen pb-20">
         {/* Navbar */}
         <nav className="z-50 flex items-center justify-between w-full py-4 px-6 md:px-16 lg:px-24 xl:px-40 text-sm">
-            <a href="https://codrix.org/">
+            <Link to="/">
                 <img src="/logo.svg" alt="HireCraft logo" className="h-11 w-auto"/>
-            </a>
+            </Link>
 
             <div className="hidden md:flex items-center gap-8 transition duration-500 text-slate-800">
                 <a href="#" onClick={(e) => handleNavClick(e, 'hero')} className="hover:text-purple-600 transition">Home</a>
@@ -101,7 +101,7 @@ const Hero = () => {
         </div>
 
         {/* Hero Section */}
-        <div id="hero" className="relative flex flex-col items-center justify-center text-sm px-4 md:px-16 lg:px-24 xl:px-40 text-black">
+        <div id="hero" className="relative flex flex-col items-center justify-center text-sm px-4 md:px-8 lg:px-16 xl:px-24 2xl:px-40 text-black">
             <div className="absolute top-28 xl:top-10 -z-10 left-1/4 size-72 sm:size-96 xl:size-120 2xl:size-132 bg-purple-300 blur-[100px] opacity-30"></div>
 
             {/* Avatars + Stars */}
@@ -127,7 +127,7 @@ const Hero = () => {
             </div>
 
             {/* Headline + CTA - CONVERSION FOCUSED */}
-            <h1 className="text-5xl md:text-6xl font-semibold max-w-5xl text-center mt-4 md:leading-[70px]">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold max-w-5xl text-center mt-4 md:leading-[70px] px-2">
                 This resume builder gets you{' '}
                 <span className="bg-gradient-to-r from-purple-700 to-purple-600 bg-clip-text text-transparent">
                     {displayText}
@@ -135,32 +135,32 @@ const Hero = () => {
                 </span>
             </h1>
 
-            <p className="max-w-2xl text-center text-lg my-7 text-slate-700">
+            <p className="max-w-2xl text-center text-base md:text-lg my-5 md:my-7 text-slate-700 px-4">
                 AI-powered <strong className="text-purple-600">ATS scoring</strong> and <strong className="text-purple-600">job-specific tailoring</strong> ensure your resume passes automated screening and matches exactly what employers want.
             </p>
 
             {/* Premium Feature Highlight */}
-            <div className="max-w-3xl mx-auto my-8 p-6 bg-gradient-to-r from-purple-50 to-purple-100/50 rounded-2xl border border-purple-200">
-                <div className="flex flex-col md:flex-row items-center justify-center gap-6">
+            <div className="max-w-3xl mx-auto my-6 md:my-8 p-4 md:p-6 bg-gradient-to-r from-purple-50 to-purple-100/50 rounded-2xl border border-purple-200 mx-4">
+                <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-6">
                     <div className="flex-1 text-center md:text-left">
-                        <h3 className="text-xl font-semibold text-slate-900 mb-2">Get Past the ATS. Land More Interviews.</h3>
-                        <p className="text-sm text-slate-700">Our AI analyzes your resume against job descriptions and provides real-time ATS scores to maximize your chances.</p>
+                        <h3 className="text-lg md:text-xl font-semibold text-slate-900 mb-2">Get Past the ATS. Land More Interviews.</h3>
+                        <p className="text-xs md:text-sm text-slate-700">Our AI analyzes your resume against job descriptions and provides real-time ATS scores to maximize your chances.</p>
                     </div>
-                    <Link to='/app/pricing' className="bg-purple-600 hover:bg-purple-700 text-white rounded-full px-8 py-3 font-semibold flex items-center gap-2 transition-colors shadow-lg hover:shadow-xl">
+                    <Link to='/app/pricing' className="bg-purple-600 hover:bg-purple-700 text-white rounded-full px-6 md:px-8 py-2.5 md:py-3 font-semibold flex items-center gap-2 transition-colors shadow-lg hover:shadow-xl text-sm md:text-base">
                         <span>Get ATS Match</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-arrow-right"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-arrow-right"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
                     </Link>
                 </div>
             </div>
 
             {/* CTA Buttons */}
-            <div className="flex items-center gap-4 ">
-                <Link to='/app' className="bg-purple-600 hover:bg-purple-700 text-white rounded-full px-9 h-12 m-1 ring-offset-2 ring-1 ring-purple-400 flex items-center transition-colors shadow-md hover:shadow-lg">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-4 px-4">
+                <Link to='/app' className="bg-purple-600 hover:bg-purple-700 text-white rounded-full px-6 md:px-9 h-11 md:h-12 m-1 ring-offset-2 ring-1 ring-purple-400 flex items-center justify-center transition-colors shadow-md hover:shadow-lg text-sm md:text-base w-full sm:w-auto">
                     Get started
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-arrow-right ml-1 size-4" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-arrow-right ml-1 size-4" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
                 </Link>
-                <button className="flex items-center gap-2 border border-slate-400 hover:bg-purple-50 transition rounded-full px-7 h-12 text-slate-700">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-video size-5" aria-hidden="true"><path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"></path><rect x="2" y="6" width="14" height="12" rx="2"></rect></svg>
+                <button className="flex items-center justify-center gap-2 border border-slate-400 hover:bg-purple-50 transition rounded-full px-5 md:px-7 h-11 md:h-12 text-slate-700 text-sm md:text-base w-full sm:w-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-video size-4 md:size-5" aria-hidden="true"><path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"></path><rect x="2" y="6" width="14" height="12" rx="2"></rect></svg>
                     <span>Try demo</span>
                 </button>
             </div>
