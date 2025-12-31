@@ -17,6 +17,7 @@ import { useSelector } from 'react-redux'
 import api from '../configs/api'
 import toast from 'react-hot-toast'
 import { canExportResume } from '../pricing/featureGate'
+import html2pdf from 'html2pdf.js'
 
 const ResumeBuilder = () => {
 
@@ -102,7 +103,7 @@ const ResumeBuilder = () => {
     }
   }
 
-  const downloadResume = ()=>{
+  const downloadResume = async ()=>{
     const exportCheck = canExportResume(authState, false)
     if (!exportCheck.allowed) {
       toast.error(exportCheck.reason || 'Export not available')
@@ -111,7 +112,39 @@ const ResumeBuilder = () => {
     if (exportCheck.withWatermark) {
       toast('Exporting with watermark. Upgrade to remove it.', { icon: 'ℹ️' })
     }
-    window.print()
+    
+    try {
+      const element = document.getElementById('resume-preview')
+      if (!element) {
+        toast.error('Resume preview not found')
+        return
+      }
+
+      const opt = {
+        margin: 0,
+        filename: `${resumeData.title || 'resume'}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { 
+          scale: 2,
+          useCORS: true,
+          letterRendering: true
+        },
+        jsPDF: { 
+          unit: 'in', 
+          format: 'letter', 
+          orientation: 'portrait' 
+        }
+      }
+
+      toast.loading('Generating PDF...', { id: 'pdf-generating' })
+      
+      await html2pdf().set(opt).from(element).save()
+      
+      toast.success('PDF downloaded successfully!', { id: 'pdf-generating' })
+    } catch (error) {
+      console.error('Error generating PDF:', error)
+      toast.error('Failed to generate PDF. Please try again.', { id: 'pdf-generating' })
+    }
   }
 
 
