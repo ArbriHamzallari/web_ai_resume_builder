@@ -120,30 +120,63 @@ const ResumeBuilder = () => {
         return
       }
 
+      // Wait for images to load
+      const images = element.getElementsByTagName('img')
+      const imagePromises = Array.from(images).map(img => {
+        if (img.complete) return Promise.resolve()
+        return new Promise((resolve, reject) => {
+          img.onload = resolve
+          img.onerror = resolve // Continue even if image fails
+          setTimeout(resolve, 3000) // Timeout after 3 seconds
+        })
+      })
+      await Promise.all(imagePromises)
+
       const opt = {
-        margin: 0,
-        filename: `${resumeData.title || 'resume'}.pdf`,
+        margin: [0, 0, 0, 0],
+        filename: `${(resumeData.title || 'resume').replace(/[^a-z0-9]/gi, '_')}.pdf`,
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { 
           scale: 2,
           useCORS: true,
-          letterRendering: true
+          letterRendering: true,
+          logging: false,
+          allowTaint: true,
+          backgroundColor: '#ffffff'
         },
         jsPDF: { 
           unit: 'in', 
           format: 'letter', 
           orientation: 'portrait' 
-        }
+        },
+        pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
       }
 
       toast.loading('Generating PDF...', { id: 'pdf-generating' })
       
-      await html2pdf().set(opt).from(element).save()
+      // Ensure html2pdf is available
+      if (typeof html2pdf === 'undefined' || !html2pdf) {
+        throw new Error('PDF library not loaded')
+      }
+      
+      // Use a timeout to ensure the library is ready
+      await new Promise(resolve => setTimeout(resolve, 200))
+      
+      // Generate and save PDF
+      const worker = html2pdf().set(opt).from(element)
+      await worker.save()
       
       toast.success('PDF downloaded successfully!', { id: 'pdf-generating' })
     } catch (error) {
       console.error('Error generating PDF:', error)
-      toast.error('Failed to generate PDF. Please try again.', { id: 'pdf-generating' })
+      const errorMessage = error?.message || error?.toString() || 'Unknown error'
+      toast.error(`Failed to generate PDF: ${errorMessage}. Please try again.`, { id: 'pdf-generating', duration: 5000 })
+      
+      // Fallback to print if PDF generation fails
+      console.log('Falling back to print dialog...')
+      setTimeout(() => {
+        window.print()
+      }, 1000)
     }
   }
 
