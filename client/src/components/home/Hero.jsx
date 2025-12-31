@@ -52,7 +52,7 @@ const Hero = () => {
 
   return (
     <>
-    <div className="min-h-screen pb-20">
+    <div className="min-h-screen pb-8 md:pb-12">
         {/* Navbar */}
         <nav className="z-50 flex items-center justify-between w-full py-4 px-6 md:px-16 lg:px-24 xl:px-40 text-sm">
             <Link to="/">
@@ -62,7 +62,6 @@ const Hero = () => {
             <div className="hidden md:flex items-center gap-8 transition duration-500 text-slate-800">
                 <a href="#" onClick={(e) => handleNavClick(e, 'hero')} className="hover:text-purple-600 transition">Home</a>
                 <a href="#features" onClick={(e) => handleNavClick(e, 'features')} className="hover:text-purple-600 transition">Features</a>
-                <a href="#templates" onClick={(e) => handleNavClick(e, 'templates')} className="hover:text-purple-600 transition">Templates</a>
                 <a href="#testimonials" onClick={(e) => handleNavClick(e, 'testimonials')} className="hover:text-purple-600 transition">Testimonials</a>
                 <Link to="/app/pricing" className="hover:text-purple-600 transition">Pricing</Link>
                 <a href="#cta" onClick={(e) => handleNavClick(e, 'cta')} className="hover:text-purple-600 transition">Contact</a>
@@ -91,7 +90,6 @@ const Hero = () => {
         <div className={`fixed inset-0 z-[100] bg-black/40 text-black backdrop-blur flex flex-col items-center justify-center text-lg gap-8 md:hidden transition-transform duration-300 ${menuOpen ? "translate-x-0" : "-translate-x-full"}`} >
             <a href="#" onClick={(e) => { handleNavClick(e, 'hero'); setMenuOpen(false); }} className="text-white">Home</a>
             <a href="#features" onClick={(e) => { handleNavClick(e, 'features'); setMenuOpen(false); }} className="text-white">Features</a>
-            <a href="#templates" onClick={(e) => { handleNavClick(e, 'templates'); setMenuOpen(false); }} className="text-white">Templates</a>
             <a href="#testimonials" onClick={(e) => { handleNavClick(e, 'testimonials'); setMenuOpen(false); }} className="text-white">Testimonials</a>
             <Link to="/app/pricing" onClick={() => setMenuOpen(false)} className="text-white">Pricing</Link>
             <a href="#cta" onClick={(e) => { handleNavClick(e, 'cta'); setMenuOpen(false); }} className="text-white">Contact</a>

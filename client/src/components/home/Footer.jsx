@@ -5,7 +5,7 @@ const Footer = () => {
   return (
     <>
 
-<footer className="flex flex-wrap justify-center lg:justify-between overflow-hidden gap-8 md:gap-10 lg:gap-20 py-12 md:py-16 px-4 md:px-8 lg:px-16 xl:px-24 text-xs md:text-[13px] text-gray-500 bg-gradient-to-r from-white via-purple-200/60 to-white mt-20 md:mt-32 lg:mt-40">
+<footer className="flex flex-wrap justify-center lg:justify-between overflow-hidden gap-8 md:gap-10 lg:gap-20 py-10 md:py-12 px-4 md:px-8 lg:px-16 xl:px-24 text-xs md:text-[13px] text-gray-500 bg-gradient-to-r from-white via-purple-200/60 to-white mt-12 md:mt-16">
         <div className="flex flex-wrap items-start gap-10 md:gap-[60px] xl:gap-[140px]">
             <Link to="/">
                 <img src="/logo.svg" alt="HireCraft logo" className="h-11 w-auto" />

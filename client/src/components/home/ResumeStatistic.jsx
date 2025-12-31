@@ -10,7 +10,7 @@ const ResumeStatistic = () => {
     }, []);
 
     return (
-        <div className="flex flex-col items-center justify-center py-12 px-4">
+        <div className="flex flex-col items-center justify-center py-6 md:py-8 px-4">
             <p className="text-4xl md:text-5xl font-bold text-purple-600 mb-2">
                 {resumeCount.toLocaleString()}
             </p>

@@ -26,9 +26,9 @@ const CompactPricing = () => {
     ];
 
     return (
-        <div id="pricing" className="py-12 md:py-16 px-4 md:px-8 lg:px-16 xl:px-24 bg-gradient-to-br from-purple-50 via-white to-purple-50">
+        <div id="pricing" className="py-8 md:py-12 px-4 md:px-8 lg:px-16 xl:px-24 bg-gradient-to-br from-purple-50 via-white to-purple-50">
             <div className="max-w-6xl mx-auto">
-                <div className="text-center mb-8 md:mb-12">
+                <div className="text-center mb-6 md:mb-8">
                     <h2 className="text-2xl md:text-3xl lg:text-4xl font-semibold text-slate-900 mb-3 md:mb-4">
                         Simple, Transparent Pricing
                     </h2>
