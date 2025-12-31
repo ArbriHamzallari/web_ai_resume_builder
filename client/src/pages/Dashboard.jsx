@@ -1,7 +1,7 @@
 import { FilePenLineIcon, LoaderCircleIcon, PencilIcon, PlusIcon, TrashIcon, UploadCloud, UploadCloudIcon, XIcon } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import { dummyResumeData } from '../assets/assets'
-import {useNavigate} from 'react-router-dom'
+import {useNavigate, useSearchParams} from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import api from '../configs/api'
 import toast from 'react-hot-toast'
@@ -10,6 +10,7 @@ import pdfToText from 'react-pdftotext'
 const Dashboard = () => {
 
   const {user, token} = useSelector(state => state.auth)
+  const [searchParams] = useSearchParams()
 
   const colors = ["#7C3AED", "#A78BFA", "#C4B5FD", "#6D28D9", "#8B5CF6"]
   const [allResumes, setAllResumes] = useState([])
@@ -32,10 +33,14 @@ const Dashboard = () => {
     }
   }
 
-  const createResume = async (event) => {
+  const createResume = async (event, templateId = null) => {
    try {
-    event.preventDefault()
-    const { data } = await api.post('/api/resumes/create', {title}, {headers: { Authorization: token }})
+    if (event) event.preventDefault()
+    const resumeData = { title: title || 'Untitled Resume' }
+    if (templateId) {
+      resumeData.template = templateId
+    }
+    const { data } = await api.post('/api/resumes/create', resumeData, {headers: { Authorization: token }})
     setAllResumes([...allResumes, data.resume])
     setTitle('')
     setShowCreateResume(false)
@@ -92,6 +97,39 @@ const Dashboard = () => {
   useEffect(()=>{
     loadAllResumes()
   },[])
+
+  // Handle template query parameter
+  useEffect(() => {
+    const templateId = searchParams.get('template')
+    if (templateId && user && token) {
+      // Auto-create resume with selected template
+      const templateNames = {
+        'classic': 'Classic Resume',
+        'modern': 'Modern Resume',
+        'minimal': 'Minimal Resume',
+        'minimal-image': 'Minimal Image Resume'
+      }
+      const resumeTitle = templateNames[templateId] || 'New Resume'
+      // Create resume first, then update with template
+      api.post('/api/resumes/create', { title: resumeTitle }, {headers: { Authorization: token }})
+        .then(({ data }) => {
+          // Update resume with template
+          return api.put('/api/resumes/update', {
+            resumeId: data.resume._id,
+            resumeData: { template: templateId }
+          }, {headers: { Authorization: token }})
+        })
+        .then(({ data }) => {
+          loadAllResumes() // Reload to get updated resume
+          navigate(`/app/builder/${data.resume._id}`)
+          // Clear the template parameter from URL
+          window.history.replaceState({}, '', '/app')
+        })
+        .catch(error => {
+          toast.error(error?.response?.data?.message || error.message)
+        })
+    }
+  }, [searchParams, user, token])
 
   return (
     <div>

@@ -7,14 +7,48 @@ const Hero = () => {
     const {user} = useSelector(state => state.auth)
 
     const [menuOpen, setMenuOpen] = React.useState(false);
+    const [displayText, setDisplayText] = React.useState('');
+    const [currentPhraseIndex, setCurrentPhraseIndex] = React.useState(0);
+    const [isDeleting, setIsDeleting] = React.useState(false);
 
-    const logos = [
-        'https://saasly.prebuiltui.com/assets/companies-logo/instagram.svg',
-        'https://saasly.prebuiltui.com/assets/companies-logo/framer.svg',
-        'https://saasly.prebuiltui.com/assets/companies-logo/microsoft.svg',
-        'https://saasly.prebuiltui.com/assets/companies-logo/huawei.svg',
-        'https://saasly.prebuiltui.com/assets/companies-logo/walmart.svg',
-    ]
+    const phrases = ['a remote job', 'paid more', 'hired', 'promoted', 'an interview'];
+
+    React.useEffect(() => {
+        const currentPhrase = phrases[currentPhraseIndex];
+        let timeout;
+
+        if (!isDeleting && displayText.length < currentPhrase.length) {
+            // Typing
+            timeout = setTimeout(() => {
+                setDisplayText(currentPhrase.slice(0, displayText.length + 1));
+            }, 100);
+        } else if (!isDeleting && displayText.length === currentPhrase.length) {
+            // Pause before deleting
+            timeout = setTimeout(() => {
+                setIsDeleting(true);
+            }, 2000);
+        } else if (isDeleting && displayText.length > 0) {
+            // Deleting
+            timeout = setTimeout(() => {
+                setDisplayText(currentPhrase.slice(0, displayText.length - 1));
+            }, 50);
+        } else if (isDeleting && displayText.length === 0) {
+            // Move to next phrase
+            setIsDeleting(false);
+            setCurrentPhraseIndex((prev) => (prev + 1) % phrases.length);
+        }
+
+        return () => clearTimeout(timeout);
+    }, [displayText, currentPhraseIndex, isDeleting, phrases]);
+
+    // Smooth scroll handler
+    const handleNavClick = (e, targetId) => {
+        e.preventDefault();
+        const element = document.getElementById(targetId);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    };
 
   return (
     <>
@@ -26,10 +60,12 @@ const Hero = () => {
             </a>
 
             <div className="hidden md:flex items-center gap-8 transition duration-500 text-slate-800">
-                <a href="#" className="hover:text-purple-600 transition">Home</a>
-                <a href="#features" className="hover:text-purple-600 transition">Features</a>
-                <a href="#testimonials" className="hover:text-purple-600 transition">Testimonials</a>
-                <a href="#cta" className="hover:text-purple-600 transition">Contact</a>
+                <a href="#" onClick={(e) => handleNavClick(e, 'hero')} className="hover:text-purple-600 transition">Home</a>
+                <a href="#features" onClick={(e) => handleNavClick(e, 'features')} className="hover:text-purple-600 transition">Features</a>
+                <a href="#templates" onClick={(e) => handleNavClick(e, 'templates')} className="hover:text-purple-600 transition">Templates</a>
+                <a href="#testimonials" onClick={(e) => handleNavClick(e, 'testimonials')} className="hover:text-purple-600 transition">Testimonials</a>
+                <Link to="/app/pricing" className="hover:text-purple-600 transition">Pricing</Link>
+                <a href="#cta" onClick={(e) => handleNavClick(e, 'cta')} className="hover:text-purple-600 transition">Contact</a>
             </div>
 
             <div className="flex gap-2">
@@ -53,17 +89,19 @@ const Hero = () => {
 
         {/* Mobile Menu */}
         <div className={`fixed inset-0 z-[100] bg-black/40 text-black backdrop-blur flex flex-col items-center justify-center text-lg gap-8 md:hidden transition-transform duration-300 ${menuOpen ? "translate-x-0" : "-translate-x-full"}`} >
-            <a href="#" className="text-white">Home</a>
-            <a href="#features" className="text-white">Features</a>
-            <a href="#testimonials" className="text-white">Testimonials</a>
-            <a href="#contact" className="text-white">Contact</a>
+            <a href="#" onClick={(e) => { handleNavClick(e, 'hero'); setMenuOpen(false); }} className="text-white">Home</a>
+            <a href="#features" onClick={(e) => { handleNavClick(e, 'features'); setMenuOpen(false); }} className="text-white">Features</a>
+            <a href="#templates" onClick={(e) => { handleNavClick(e, 'templates'); setMenuOpen(false); }} className="text-white">Templates</a>
+            <a href="#testimonials" onClick={(e) => { handleNavClick(e, 'testimonials'); setMenuOpen(false); }} className="text-white">Testimonials</a>
+            <Link to="/app/pricing" onClick={() => setMenuOpen(false)} className="text-white">Pricing</Link>
+            <a href="#cta" onClick={(e) => { handleNavClick(e, 'cta'); setMenuOpen(false); }} className="text-white">Contact</a>
             <button onClick={() => setMenuOpen(false)} className="active:ring-3 active:ring-white aspect-square size-10 p-1 items-center justify-center bg-purple-600 hover:bg-purple-700 transition text-white rounded-md flex" >
                 X
             </button>
         </div>
 
         {/* Hero Section */}
-        <div className="relative flex flex-col items-center justify-center text-sm px-4 md:px-16 lg:px-24 xl:px-40 text-black">
+        <div id="hero" className="relative flex flex-col items-center justify-center text-sm px-4 md:px-16 lg:px-24 xl:px-40 text-black">
             <div className="absolute top-28 xl:top-10 -z-10 left-1/4 size-72 sm:size-96 xl:size-120 2xl:size-132 bg-purple-300 blur-[100px] opacity-30"></div>
 
             {/* Avatars + Stars */}
@@ -90,7 +128,11 @@ const Hero = () => {
 
             {/* Headline + CTA - CONVERSION FOCUSED */}
             <h1 className="text-5xl md:text-6xl font-semibold max-w-5xl text-center mt-4 md:leading-[70px]">
-                Beat the ATS. Match the Job. <span className="bg-gradient-to-r from-purple-700 to-purple-600 bg-clip-text text-transparent text-nowrap">Get Hired.</span>
+                This resume builder gets you{' '}
+                <span className="bg-gradient-to-r from-purple-700 to-purple-600 bg-clip-text text-transparent">
+                    {displayText}
+                    <span className="animate-pulse">|</span>
+                </span>
             </h1>
 
             <p className="max-w-2xl text-center text-lg my-7 text-slate-700">
@@ -123,11 +165,6 @@ const Hero = () => {
                 </button>
             </div>
 
-            <p className="py-6 text-slate-600 mt-14">Trusting by leading brands, including</p>
-
-            <div className="flex flex-wrap justify-between max-sm:justify-center gap-6 max-w-3xl w-full mx-auto py-4" id="logo-container">
-                {logos.map((logo, index) => <img key={index} src={logo} alt="logo" className="h-6 w-auto max-w-xs" />)}
-            </div>
         </div>
     </div>
     <style>
