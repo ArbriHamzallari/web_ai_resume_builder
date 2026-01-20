@@ -18,9 +18,11 @@ await connectDB()
 const corsOptions = {
     origin: [
         'https://resume-frontend-5pbi.onrender.com',
+        'https://web-ai-resume-builder.vercel.app',
+        process.env.FRONTEND_URL, // Allow frontend URL from environment variable
         'http://localhost:5173',
         'http://localhost:3000'
-    ],
+    ].filter(Boolean), // Remove any undefined values
     credentials: true, // CRITICAL: Allow cookies
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
