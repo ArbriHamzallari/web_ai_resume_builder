@@ -63,9 +63,11 @@ export const executePayPalPayment = async (req, res) => {
     payment.providerPaymentId = payerId
     await payment.save()
 
-    // Update user plan
+    // Update user plan and set isPremium based on plan
+    const isPremium = payment.planId === 'pro_monthly' || payment.planId === 'one_time'
     await User.findByIdAndUpdate(userId, {
       plan: payment.planId,
+      isPremium: isPremium,
       planExpiresAt: payment.billing === 'monthly' 
         ? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) // 30 days
         : null,
@@ -137,9 +139,11 @@ export const handleLemonSqueezyWebhook = async (req, res) => {
         payment.providerTransactionId = data.id
         await payment.save()
 
-        // Update user plan
+        // Update user plan and set isPremium based on plan
+        const isPremium = payment.planId === 'pro_monthly' || payment.planId === 'one_time'
         await User.findByIdAndUpdate(payment.userId, {
           plan: payment.planId,
+          isPremium: isPremium,
           planExpiresAt: payment.billing === 'monthly'
             ? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
             : null,
@@ -172,9 +176,11 @@ export const handlePayPalWebhook = async (req, res) => {
         payment.providerTransactionId = resource.id
         await payment.save()
 
-        // Update user plan
+        // Update user plan and set isPremium based on plan
+        const isPremium = payment.planId === 'pro_monthly' || payment.planId === 'one_time'
         await User.findByIdAndUpdate(payment.userId, {
           plan: payment.planId,
+          isPremium: isPremium,
           planExpiresAt: payment.billing === 'monthly'
             ? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
             : null,

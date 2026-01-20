@@ -11,6 +11,16 @@ const Navbar = () => {
 
     const navigate = useNavigate()
 
+    // Temporary debug indicator for admin override (development only)
+    const isDevelopment = import.meta.env.DEV || import.meta.env.MODE === 'development'
+    const isAdmin = () => {
+      if (!user?.email) return false
+      const adminEmail = import.meta.env.VITE_ADMIN_EMAIL
+      if (!adminEmail) return false
+      return user.email.toLowerCase().trim() === adminEmail.toLowerCase().trim()
+    }
+    const showAdminDebug = isDevelopment && isAdmin()
+
     const logoutUser = async ()=>{
         // Clear local storage
         localStorage.removeItem('token')
@@ -23,7 +33,13 @@ const Navbar = () => {
     }
 
   return (
-    <div className='shadow bg-white'>
+    <div className='shadow bg-white relative'>
+      {/* Temporary debug indicator for admin override (development only) */}
+      {showAdminDebug && (
+        <div className='absolute top-0 right-0 bg-purple-600 text-white text-xs px-2 py-1 rounded-bl-lg font-medium z-50 shadow-sm'>
+          Premium Active (Admin)
+        </div>
+      )}
       <nav className='flex items-center justify-between max-w-7xl mx-auto px-4 py-3.5 text-slate-800 transition-all'>
         <Link to="/">
             <img src="/logo.svg" alt="HireCraft logo" className="h-11 w-auto" />

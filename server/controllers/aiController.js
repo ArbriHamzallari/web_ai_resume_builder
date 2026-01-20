@@ -58,6 +58,82 @@ export const enhanceJobDescription = async (req, res) => {
     }
 }
 
+// controller for calculating ATS score
+// POST: /api/ai/ats-score
+// Note: Requires premium access (enforced by middleware)
+export const calculateATSScore = async (req, res) => {
+    try {
+        const { resumeData } = req.body;
+
+        if (!resumeData) {
+            return res.status(400).json({ message: 'Missing required fields' })
+        }
+
+        let score = 0;
+        let feedback = [];
+
+        // Check personal info completeness (20 points)
+        if (resumeData.personal_info?.full_name) score += 5;
+        else feedback.push('Add your full name');
+        
+        if (resumeData.personal_info?.email) score += 5;
+        else feedback.push('Add your email address');
+        
+        if (resumeData.personal_info?.phone) score += 5;
+        else feedback.push('Add your phone number');
+        
+        if (resumeData.personal_info?.location) score += 5;
+        else feedback.push('Add your location');
+
+        // Check professional summary (15 points)
+        if (resumeData.professional_summary && resumeData.professional_summary.length > 100) {
+            score += 15;
+        } else {
+            feedback.push('Add a professional summary (100+ characters)');
+        }
+
+        // Check experience (30 points)
+        if (resumeData.experience && resumeData.experience.length > 0) {
+            score += 15;
+            const hasDescriptions = resumeData.experience.some(exp => 
+                exp.description && exp.description.length > 50
+            );
+            if (hasDescriptions) score += 15;
+            else feedback.push('Add detailed descriptions to your work experience');
+        } else {
+            feedback.push('Add at least one work experience');
+        }
+
+        // Check education (15 points)
+        if (resumeData.education && resumeData.education.length > 0) {
+            score += 15;
+        } else {
+            feedback.push('Add your education details');
+        }
+
+        // Check skills (10 points)
+        if (resumeData.skills && resumeData.skills.length >= 5) {
+            score += 10;
+        } else {
+            feedback.push('Add at least 5 skills');
+        }
+
+        // Check projects (10 points)
+        if (resumeData.project && resumeData.project.length > 0) {
+            score += 10;
+        } else {
+            feedback.push('Add at least one project');
+        }
+
+        return res.status(200).json({
+            score: Math.min(100, score),
+            feedback
+        });
+    } catch (error) {
+        return res.status(400).json({ message: error.message });
+    }
+}
+
 // controller for uploading a resume to the database
 // POST: /api/ai/upload-resume
 export const uploadResume = async (req, res) => {

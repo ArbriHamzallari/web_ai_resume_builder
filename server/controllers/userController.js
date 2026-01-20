@@ -2,6 +2,7 @@ import User from "../models/User.js";
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import Resume from "../models/Resume.js";
+import { isAdminUser, getEffectivePlan } from "../utils/adminUtils.js";
 
 
 const generateToken = (userId)=>{
@@ -36,9 +37,21 @@ export const registerUser = async (req, res) => {
          const token = generateToken(newUser._id)
          newUser.password = undefined;
 
+         // Admin premium override: If user is admin, set isPremium to true
+         const userObj = newUser.toObject()
+         const effectivePlan = getEffectivePlan(newUser)
+         if (isAdminUser(newUser.email)) {
+            userObj.plan = effectivePlan
+            userObj.isPremium = true // Admin users get premium access
+            userObj.isAdmin = true // Flag for debugging/UI purposes
+         } else {
+            // Ensure isPremium reflects actual status
+            userObj.isPremium = newUser.isPremium || false
+         }
+
          // Set HTTP-only cookie for production security
          // secure: true for HTTPS (Render uses HTTPS)
-         // sameSite: 'none' required for cross-origin cookies
+         // sameSite: 'none' required for cross-origin requests
          res.cookie('token', token, {
              httpOnly: true,
              secure: true, // Always true on Render (HTTPS)
@@ -47,7 +60,7 @@ export const registerUser = async (req, res) => {
              path: '/'
          })
 
-         return res.status(201).json({message: 'User created successfully', token, user: newUser})
+         return res.status(201).json({message: 'User created successfully', token, user: userObj})
 
     } catch (error) {
         return res.status(400).json({message: error.message})
@@ -75,6 +88,18 @@ export const loginUser = async (req, res) => {
          const token = generateToken(user._id)
          user.password = undefined;
 
+         // Admin premium override: If user is admin, set isPremium to true
+         const userObj = user.toObject()
+         const effectivePlan = getEffectivePlan(user)
+         if (isAdminUser(user.email)) {
+            userObj.plan = effectivePlan
+            userObj.isPremium = true // Admin users get premium access
+            userObj.isAdmin = true // Flag for debugging/UI purposes
+         } else {
+            // Ensure isPremium reflects actual status
+            userObj.isPremium = user.isPremium || false
+         }
+
          // Set HTTP-only cookie for production security
          // secure: true for HTTPS (Render uses HTTPS)
          // sameSite: 'none' required for cross-origin cookies
@@ -86,7 +111,7 @@ export const loginUser = async (req, res) => {
              path: '/'
          })
 
-         return res.status(200).json({message: 'Login successful', token, user})
+         return res.status(200).json({message: 'Login successful', token, user: userObj})
 
     } catch (error) {
         return res.status(400).json({message: error.message})
@@ -105,9 +130,23 @@ export const getUserById = async (req, res) => {
         if(!user){
             return res.status(404).json({message: 'User not found'})
         }
-        // return user
-        user.password = undefined;
-         return res.status(200).json({user})
+        
+        // Admin premium override: If user is admin, set isPremium to true
+        const effectivePlan = getEffectivePlan(user)
+        const userObj = user.toObject()
+        userObj.password = undefined
+        
+        // Override plan and premium status if admin (for frontend feature gating)
+        if (isAdminUser(user.email)) {
+            userObj.plan = effectivePlan
+            userObj.isPremium = true // Admin users get premium access
+            userObj.isAdmin = true // Flag for debugging/UI purposes
+        } else {
+            // Ensure isPremium reflects actual status
+            userObj.isPremium = user.isPremium || false
+        }
+        
+        return res.status(200).json({user: userObj})
 
     } catch (error) {
         return res.status(400).json({message: error.message})
